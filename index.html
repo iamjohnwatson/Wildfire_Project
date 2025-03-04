@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wildfire Story: Pacific Palisades & USA Fires</title>
+  
+  <!-- Leaflet CSS & JS for the interactive map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- D3.js for slider functionality -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f7f7;
+      color: #333;
+      line-height: 1.6;
+    }
+    p {
+      margin: 16px 0;
+    }
+    h1, h2 {
+      margin: 20px 0 16px;
+      padding: 0;
+      color: #222;
+    }
+    
+    /* Container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    /* Section Styles */
+    .section {
+      background: #fff;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    
+    /* Slider Styles */
+    .slider-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .slider-container input[type=range] {
+      width: 80%;
+      max-width: 500px;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      background: #ccc;
+      border-radius: 2px;
+      outline: none;
+      margin: 20px auto;
+    }
+    .slider-container input[type=range]:focus {
+      outline: none;
+    }
+    .slider-container input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #3f51b5;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      margin-top: -8px;
+    }
+    .slider-container input[type=range]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #3f51b5;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    /* Image Display */
+    .image-display {
+      text-align: center;
+    }
+    .image-display img {
+      width: 100%;
+      max-height: 500px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    
+    /* Narrative */
+    .narrative {
+      font-size: 1.1em;
+      margin-top: 20px;
+    }
+    
+    /* Map */
+    #firms-map {
+      width: 100%;
+      height: 500px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .slider-container input[type=range] {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Section 1: Satellite Image Slider for Pacific Palisades & Malibu -->
+    <div class="section" id="satellite-section">
+      <h1>Wildfire Impact in Pacific Palisades & Malibu</h1>
+      <p>
+        These maps chronicle the evolution of a catastrophic wildfire that devastated Pacific Palisades and Malibu between January 2 and February 21, 2025. Use the slider below to explore satellite images captured on these key dates. Although our technical analysis employs DNBR (Delta Normalized Burn Ratio) values, here they serve as textual context to help illustrate the visual transformation—from a lush, vibrant landscape to one scarred by fire and finally showing early signs of recovery.
+      </p>
+      <div class="slider-container">
+        <input type="range" id="imageSlider" min="0" max="3" step="1" value="0">
+        <p id="sliderLabel">Date: January 2, 2025</p>
+      </div>
+      <div class="image-display">
+        <img id="satelliteImage" src="SWIR_02012025.jpg" alt="Satellite Image - January 2, 2025">
+      </div>
+      <!-- Analysis Text for DNBR -->
+      <div class="narrative" id="analysisText">
+        <p>DNBR: Minimal damage.</p>
+      </div>
+      <div class="narrative">
+        <p>
+          Between January 2 and February 21, 2025, the coastal regions of Pacific Palisades and Malibu underwent a profound transformation due to a catastrophic wildfire. On January 2, satellite imagery depicted a pristine landscape, rich in vibrant vegetation and a picturesque coastline. However, as the fire ignited and spread, the environment deteriorated rapidly. DNBR values, serving as our analytical benchmark, indicated a gradual escalation in burn severity. By mid-January, initial signs of damage became apparent, foreshadowing the extensive destruction that was to follow. The imagery captured on January 30 starkly revealed the devastation—the once-thriving ecosystem had largely been supplanted by charred remnants, and the intensity of the burns was unmistakable. Yet, amid this widespread loss, the final image from February 21 unveiled a glimmer of hope. In certain areas, early signs of regrowth emerged, suggesting nature’s resilience and the potential for recovery.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Section 2: USA FIRMS Map for Active Wildfires -->
+    <div class="section" id="firms-section">
+      <h2>Wildfires Across the USA</h2>
+      <p>
+        Wildfires continue to threaten communities across the United States. The interactive map below, based on a locally clipped FIRMS dataset joined with county names, displays active wildfire events. Each marker indicates the county where the fire was detected, offering valuable insight into the local impacts within the broader national crisis.
+      </p>
+      <div id="firms-map"></div>
+      <div class="narrative">
+        <p>
+          Focusing on county-level data allows us to better understand the localized effects of wildfires. This national view complements the detailed analysis of the Pacific Palisades and Malibu event, providing a comprehensive perspective on wildfire impacts across the country.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // -------------------------------
+    // Section 1: Satellite Image Slider
+    // -------------------------------
+    const images = [
+      { date: 'January 2, 2025', src: 'SWIR_02012025.jpg', dnbr: 'DNBR: Minimal damage.' },
+      { date: 'January 12, 2025', src: 'SWIR_12012025.jpg', dnbr: 'DNBR: Moderate burning.' },
+      { date: 'February 1, 2025', src: 'SWIR_01022025.jpg', dnbr: 'DNBR: Severe burn observed.' },
+      { date: 'February 21, 2025', src: 'SWIR_21022025.jpg', dnbr: 'DNBR: Early recovery signs.' }
+    ];
+    
+    const slider = document.getElementById('imageSlider');
+    const satelliteImage = document.getElementById('satelliteImage');
+    const sliderLabel = document.getElementById('sliderLabel');
+    const analysisText = document.getElementById('analysisText');
+    
+    slider.addEventListener('input', function() {
+      const index = parseInt(this.value);
+      satelliteImage.src = images[index].src;
+      sliderLabel.textContent = `Date: ${images[index].date}`;
+      // Update the DNBR analysis text
+      analysisText.innerHTML = `<p>${images[index].dnbr}</p>`;
+    });
+    
+    // -------------------------------
+    // Section 2: USA FIRMS Map
+    // -------------------------------
+    const firmsMap = L.map('firms-map').setView([37.5, -95], 4);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(firmsMap);
+    
+    // Load the locally joined FIRMS dataset with county names
+    const firmsDataURL = 'FIRMS_COUNTIES.geojson';
+    fetch(firmsDataURL)
+      .then(response => response.json())
+      .then(data => {
+        L.geoJSON(data, {
+          // Use small dark red circle markers
+          pointToLayer: (feature, latlng) => {
+            return L.circleMarker(latlng, {
+              radius: 3,
+              fillColor: '#B71C1C', // Darker Material Red
+              color: '#B71C1C',
+              weight: 1,
+              opacity: 1,
+              fillOpacity: 0.8
+            });
+          },
+          onEachFeature: (feature, layer) => {
+            // Use the 'name' attribute from QGIS for county
+            const county = feature.properties.county_name || feature.properties.name || 'Unknown County';
+            layer.bindPopup(`<b>County:</b> ${county}`);
+          }
+        }).addTo(firmsMap);
+      })
+      .catch(error => console.error('Error loading FIRMS_COUNTIES.geojson:', error));
+  </script>
+</body>
+</html>
