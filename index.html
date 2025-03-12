@@ -19,12 +19,36 @@
       font-family: 'Merriweather', serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #FFECB3 0%, #FF5722 100%); /* Wildfire-inspired gradient */
+      background: linear-gradient(135deg, #E0F7FA, #4FC3F7, #0288D1); /* Cooler blue-gray gradient */
+      background-size: 200% 200%;
+      animation: gradientShift 20s ease infinite; /* Slower animation for subtlety */
       color: #333;
       line-height: 1.6;
+      position: relative;
+    }
+    body::before { /* Subtle smoke/noise overlay with reduced opacity */
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100" height="100" filter="url(%23noise)"/%3E%3C/svg%3E');
+      background-blend-mode: overlay;
+      pointer-events: none;
+      opacity: 0.5; /* Reduced opacity */
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+      100% { background-position: 0% 0%; }
     }
     p {
       margin: 16px 0;
+      transition: color 0.3s ease;
+    }
+    p:hover {
+      color: #0288D1; /* Cool blue on hover */
     }
     h1, h2 {
       font-family: 'Oswald', sans-serif;
@@ -32,13 +56,8 @@
       letter-spacing: 1px;
       margin: 20px 0 16px;
       padding: 0;
-      color: #D81B60; /* Deep red for headers */
+      color: #0277BD; /* Darker blue for headers */
       position: relative;
-    }
-    h1::after, h2::after {
-      content: '🔥'; /* Unicode flame as a simple icon */
-      font-size: 0.8em;
-      margin-left: 8px;
     }
     
     /* Container */
@@ -48,33 +67,40 @@
       padding: 20px;
     }
     
-    /* Section Styles */
+    /* Section Styles (Glassmorphic) */
     .section {
-      background: linear-gradient(to bottom, #FFFFFF, #FFF3E0); /* Subtle gradient */
       margin: 20px 0;
       padding: 20px;
-      border: 1px solid #FF5722; /* Fire-orange border */
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(255, 87, 34, 0.2);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+      border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle white border */
+      backdrop-filter: blur(10px); /* Glassmorphic blur */
+      -webkit-backdrop-filter: blur(10px); /* Safari support */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
       opacity: 0;
-      animation: fadeIn 1s ease forwards; /* Fade-in animation */
+      animation: fadeIn 1s ease forwards;
       position: relative;
+      transition: transform 0.3s ease;
+    }
+    .section:hover {
+      transform: translateY(-5px);
     }
     .section:nth-child(1) { animation-delay: 0.2s; }
     .section:nth-child(2) { animation-delay: 0.4s; }
     @keyframes fadeIn {
       to { opacity: 1; }
     }
-    .section::before { /* CSS divider effect */
+    .section::before { /* Subtle smoke trail, cooler tone */
       content: '';
       position: absolute;
-      top: -10px;
+      top: -20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 50px;
-      height: 4px;
-      background: #D81B60; /* Deep red divider */
-      border-radius: 2px;
+      width: 60px;
+      height: 10px;
+      background: rgba(144, 202, 249, 0.3); /* Light blue smoke */
+      border-radius: 50%;
+      filter: blur(5px);
     }
     
     /* Slider Styles */
@@ -88,7 +114,7 @@
       -webkit-appearance: none;
       appearance: none;
       height: 6px;
-      background: linear-gradient(to right, #4CAF50, #FF5722, #B71C1C, #8D6E63); /* Thematic gradient */
+      background: linear-gradient(to right, #B3E5FC, #4FC3F7, #0288D1); /* Cooler gradient */
       border-radius: 3px;
       outline: none;
       margin: 20px auto;
@@ -100,27 +126,27 @@
       -webkit-appearance: none;
       appearance: none;
       width: 20px;
-      height: 20px;
-      background: #FF5722; /* Fire-orange thumb */
-      border-radius: 50%;
+      height: 30px;
+      background: #0288D1; /* Cool blue thumb */
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Triangle shape */
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
     }
-    .slider-container input[type=range]::-webkit-slider-thumb::before {
-      content: '🔥'; /* Flame emoji as thumb decoration */
-      position: absolute;
-      top: -5px;
-      left: 5px;
-      font-size: 12px;
+    .slider-container input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
     }
     .slider-container input[type=range]::-moz-range-thumb {
       width: 20px;
-      height: 20px;
-      background: #FF5722;
-      border-radius: 50%;
+      height: 30px;
+      background: #0288D1;
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
+    }
+    .slider-container input[type=range]::-moz-range-thumb:hover {
+      transform: scale(1.2);
     }
     
     /* Image Display */
@@ -133,8 +159,9 @@
       max-height: 500px;
       border-radius: 8px;
       margin-bottom: 10px;
-      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5); /* Smoky vignette */
-      border: 2px solid #FF5722; /* Fire-orange frame */
+      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.3); /* Lighter vignette */
+      border: 2px solid rgba(2, 136, 209, 0.5); /* Semi-transparent blue border */
+      opacity: 0.9; /* Reduced opacity */
     }
     
     /* Narrative */
@@ -143,9 +170,9 @@
       margin-top: 20px;
     }
     .narrative blockquote {
-      color: #FF5722;
+      color: #4FC3F7; /* Light blue */
       font-style: italic;
-      border-left: 4px solid #D81B60;
+      border-left: 4px solid #0288D1;
       padding-left: 16px;
       margin: 20px 0;
     }
@@ -156,7 +183,8 @@
       height: 500px;
       border-radius: 8px;
       margin-top: 20px;
-      border: 2px solid #B71C1C; /* Dark red border */
+      border: 2px solid rgba(2, 136, 209, 0.5); /* Semi-transparent blue */
+      opacity: 0.95; /* Slightly reduced opacity */
     }
     
     /* Responsive adjustments */
@@ -242,7 +270,7 @@
     // -------------------------------
     const firmsMap = L.map('firms-map').setView([37.5, -95], 4);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© CartoDB' /* Darker basemap for contrast */
+      attribution: '© CartoDB'
     }).addTo(firmsMap);
     
     // Load the locally joined FIRMS dataset with county names
@@ -254,22 +282,37 @@
           pointToLayer: (feature, latlng) => {
             return L.circleMarker(latlng, {
               radius: 5,
-              fillColor: '#FF5722', /* Fire-orange markers */
-              color: '#FF5722',
+              fillColor: '#4FC3F7', /* Cool blue markers */
+              color: '#4FC3F7',
               weight: 1,
-              opacity: 1,
-              fillOpacity: 0.8
+              opacity: 0.8, /* Reduced opacity */
+              fillOpacity: 0.6,
+              className: 'fire-marker'
             });
           },
           onEachFeature: (feature, layer) => {
             const county = feature.properties.county_name || feature.properties.name || 'Unknown County';
             layer.bindPopup(`<b>County:</b> ${county}`);
-            layer.on('mouseover', () => layer.setStyle({ radius: 7, fillOpacity: 1 }));
-            layer.on('mouseout', () => layer.setStyle({ radius: 5, fillOpacity: 0.8 }));
+            layer.on('mouseover', () => layer.setStyle({ radius: 7, fillOpacity: 0.9 }));
+            layer.on('mouseout', () => layer.setStyle({ radius: 5, fillOpacity: 0.6 }));
           }
         }).addTo(firmsMap);
       })
       .catch(error => console.error('Error loading FIRMS_COUNTIES.geojson:', error));
+
+    // Add CSS for pulsating markers
+    const style = document.createElement('style');
+    style.textContent = `
+      .fire-marker {
+        animation: pulse 2s infinite; /* Slower pulse for cooler vibe */
+      }
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(79, 195, 247, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0); }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>
