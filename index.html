@@ -10,14 +10,16 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <!-- D3.js for slider functionality -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- Google Fonts for Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Merriweather&display=swap" rel="stylesheet">
   
   <style>
     /* Base Styles */
     body {
-      font-family: 'Roboto', Arial, sans-serif;
+      font-family: 'Merriweather', serif;
       margin: 0;
       padding: 0;
-      background: #f7f7f7;
+      background: linear-gradient(135deg, #FFECB3 0%, #FF5722 100%); /* Wildfire-inspired gradient */
       color: #333;
       line-height: 1.6;
     }
@@ -25,9 +27,12 @@
       margin: 16px 0;
     }
     h1, h2 {
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       margin: 20px 0 16px;
       padding: 0;
-      color: #222;
+      color: #D81B60; /* Deep red for headers */
     }
     
     /* Container */
@@ -39,11 +44,19 @@
     
     /* Section Styles */
     .section {
-      background: #fff;
+      background: linear-gradient(to bottom, #FFFFFF, #FFF3E0); /* Subtle gradient */
       margin: 20px 0;
       padding: 20px;
+      border: 1px solid #FF5722; /* Fire-orange border */
       border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(255, 87, 34, 0.2);
+      opacity: 0;
+      animation: fadeIn 1s ease forwards; /* Fade-in animation */
+    }
+    .section:nth-child(1) { animation-delay: 0.2s; }
+    .section:nth-child(2) { animation-delay: 0.4s; }
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
     
     /* Slider Styles */
@@ -56,9 +69,9 @@
       max-width: 500px;
       -webkit-appearance: none;
       appearance: none;
-      height: 4px;
-      background: #ccc;
-      border-radius: 2px;
+      height: 6px;
+      background: linear-gradient(to right, #4CAF50, #FF5722, #B71C1C, #8D6E63); /* Thematic gradient */
+      border-radius: 3px;
       outline: none;
       margin: 20px auto;
     }
@@ -68,38 +81,49 @@
     .slider-container input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #3f51b5;
+      width: 30px;
+      height: 30px;
+      background: url('flame-icon.png') no-repeat center; /* Custom flame icon from Illustrator */
+      background-size: contain;
       cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      margin-top: -8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      border-radius: 0;
     }
     .slider-container input[type=range]::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #3f51b5;
+      width: 30px;
+      height: 30px;
+      background: url('flame-icon.png') no-repeat center; /* Custom flame icon from Illustrator */
+      background-size: contain;
       cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      border-radius: 0;
     }
     
     /* Image Display */
     .image-display {
       text-align: center;
+      position: relative;
     }
     .image-display img {
       width: 100%;
       max-height: 500px;
       border-radius: 8px;
       margin-bottom: 10px;
+      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5); /* Smoky vignette */
+      border: 2px solid #FF5722; /* Fire-orange frame */
     }
     
     /* Narrative */
     .narrative {
       font-size: 1.1em;
       margin-top: 20px;
+    }
+    .narrative blockquote {
+      color: #FF5722;
+      font-style: italic;
+      border-left: 4px solid #D81B60;
+      padding-left: 16px;
+      margin: 20px 0;
     }
     
     /* Map */
@@ -108,6 +132,7 @@
       height: 500px;
       border-radius: 8px;
       margin-top: 20px;
+      border: 2px solid #B71C1C; /* Dark red border */
     }
     
     /* Responsive adjustments */
@@ -122,6 +147,7 @@
   <div class="container">
     <!-- Section 1: Satellite Image Slider for Pacific Palisades & Malibu -->
     <div class="section" id="satellite-section">
+      <!-- Replace with Illustrator-designed SVG/PNG header if desired -->
       <h1>Wildfire Impact in Pacific Palisades & Malibu</h1>
       <p>
         These maps chronicle the evolution of a catastrophic wildfire that devastated Pacific Palisades and Malibu between January 2 and February 21, 2025. Use the slider below to explore satellite images captured on these key dates. Although our technical analysis employs DNBR (Delta Normalized Burn Ratio) values, here they serve as textual context to help illustrate the visual transformation—from a lush, vibrant landscape to one scarred by fire and finally showing early signs of recovery.
@@ -139,13 +165,21 @@
       </div>
       <div class="narrative">
         <p>
-          Between January 2 and February 21, 2025, the coastal regions of Pacific Palisades and Malibu underwent a profound transformation due to a catastrophic wildfire. On January 2, satellite imagery depicted a pristine landscape, rich in vibrant vegetation and a picturesque coastline. However, as the fire ignited and spread, the environment deteriorated rapidly. DNBR values, serving as our analytical benchmark, indicated a gradual escalation in burn severity. By mid-January, initial signs of damage became apparent, foreshadowing the extensive destruction that was to follow. The imagery captured on January 30 starkly revealed the devastation—the once-thriving ecosystem had largely been supplanted by charred remnants, and the intensity of the burns was unmistakable. Yet, amid this widespread loss, the final image from February 21 unveiled a glimmer of hope. In certain areas, early signs of regrowth emerged, suggesting nature’s resilience and the potential for recovery.
+          Between January 2 and February 21, 2025, the coastal regions of Pacific Palisades and Malibu underwent a profound transformation due to a catastrophic wildfire. On January 2, satellite imagery depicted a pristine landscape, rich in vibrant vegetation and a picturesque coastline. However, as the fire ignited and spread, the environment deteriorated rapidly. DNBR values, serving as our analytical benchmark, indicated a gradual escalation in burn severity.
+        </p>
+        <blockquote>
+          "By mid-January, initial signs of damage became apparent, foreshadowing the extensive destruction that was to follow."
+        </blockquote>
+        <p>
+          The imagery captured on January 30 starkly revealed the devastation—the once-thriving ecosystem had largely been supplanted by charred remnants, and the intensity of the burns was unmistakable. Yet, amid this widespread loss, the final image from February 21 unveiled a glimmer of hope. In certain areas, early signs of regrowth emerged, suggesting nature’s resilience and the potential for recovery.
         </p>
       </div>
+      <!-- Optional: Add Illustrator-designed divider (e.g., flame SVG) here -->
     </div>
     
     <!-- Section 2: USA FIRMS Map for Active Wildfires -->
     <div class="section" id="firms-section">
+      <!-- Replace with Illustrator-designed SVG/PNG header if desired -->
       <h2>Wildfires Across the USA</h2>
       <p>
         Wildfires continue to threaten communities across the United States. The interactive map below, based on a locally clipped FIRMS dataset joined with county names, displays active wildfire events. Each marker indicates the county where the fire was detected, offering valuable insight into the local impacts within the broader national crisis.
@@ -179,7 +213,6 @@
       const index = parseInt(this.value);
       satelliteImage.src = images[index].src;
       sliderLabel.textContent = `Date: ${images[index].date}`;
-      // Update the DNBR analysis text
       analysisText.innerHTML = `<p>${images[index].dnbr}</p>`;
     });
     
@@ -187,8 +220,8 @@
     // Section 2: USA FIRMS Map
     // -------------------------------
     const firmsMap = L.map('firms-map').setView([37.5, -95], 4);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© CartoDB' /* Darker basemap for contrast */
     }).addTo(firmsMap);
     
     // Load the locally joined FIRMS dataset with county names
@@ -197,21 +230,28 @@
       .then(response => response.json())
       .then(data => {
         L.geoJSON(data, {
-          // Use small dark red circle markers
           pointToLayer: (feature, latlng) => {
-            return L.circleMarker(latlng, {
-              radius: 3,
-              fillColor: '#B71C1C', // Darker Material Red
-              color: '#B71C1C',
-              weight: 1,
-              opacity: 1,
-              fillOpacity: 0.8
+            return L.marker(latlng, {
+              icon: L.icon({
+                iconUrl: 'flame-icon.svg', /* Custom flame icon from Illustrator */
+                iconSize: [20, 30],
+                iconAnchor: [10, 30]
+              })
             });
           },
           onEachFeature: (feature, layer) => {
-            // Use the 'name' attribute from QGIS for county
             const county = feature.properties.county_name || feature.properties.name || 'Unknown County';
             layer.bindPopup(`<b>County:</b> ${county}`);
+            layer.on('mouseover', () => layer.setIcon(L.icon({
+              iconUrl: 'flame-icon.svg',
+              iconSize: [25, 35], /* Scale up on hover */
+              iconAnchor: [12.5, 35]
+            })));
+            layer.on('mouseout', () => layer.setIcon(L.icon({
+              iconUrl: 'flame-icon.svg',
+              iconSize: [20, 30],
+              iconAnchor: [10, 30]
+            })));
           }
         }).addTo(firmsMap);
       })
