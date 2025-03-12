@@ -33,6 +33,12 @@
       margin: 20px 0 16px;
       padding: 0;
       color: #D81B60; /* Deep red for headers */
+      position: relative;
+    }
+    h1::after, h2::after {
+      content: '🔥'; /* Unicode flame as a simple icon */
+      font-size: 0.8em;
+      margin-left: 8px;
     }
     
     /* Container */
@@ -52,11 +58,23 @@
       box-shadow: 0 4px 12px rgba(255, 87, 34, 0.2);
       opacity: 0;
       animation: fadeIn 1s ease forwards; /* Fade-in animation */
+      position: relative;
     }
     .section:nth-child(1) { animation-delay: 0.2s; }
     .section:nth-child(2) { animation-delay: 0.4s; }
     @keyframes fadeIn {
       to { opacity: 1; }
+    }
+    .section::before { /* CSS divider effect */
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 4px;
+      background: #D81B60; /* Deep red divider */
+      border-radius: 2px;
     }
     
     /* Slider Styles */
@@ -81,22 +99,28 @@
     .slider-container input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 30px;
-      height: 30px;
-      background: url('flame-icon.png') no-repeat center; /* Custom flame icon from Illustrator */
-      background-size: contain;
+      width: 20px;
+      height: 20px;
+      background: #FF5722; /* Fire-orange thumb */
+      border-radius: 50%;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-      border-radius: 0;
+      position: relative;
+    }
+    .slider-container input[type=range]::-webkit-slider-thumb::before {
+      content: '🔥'; /* Flame emoji as thumb decoration */
+      position: absolute;
+      top: -5px;
+      left: 5px;
+      font-size: 12px;
     }
     .slider-container input[type=range]::-moz-range-thumb {
-      width: 30px;
-      height: 30px;
-      background: url('flame-icon.png') no-repeat center; /* Custom flame icon from Illustrator */
-      background-size: contain;
+      width: 20px;
+      height: 20px;
+      background: #FF5722;
+      border-radius: 50%;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-      border-radius: 0;
     }
     
     /* Image Display */
@@ -147,7 +171,6 @@
   <div class="container">
     <!-- Section 1: Satellite Image Slider for Pacific Palisades & Malibu -->
     <div class="section" id="satellite-section">
-      <!-- Replace with Illustrator-designed SVG/PNG header if desired -->
       <h1>Wildfire Impact in Pacific Palisades & Malibu</h1>
       <p>
         These maps chronicle the evolution of a catastrophic wildfire that devastated Pacific Palisades and Malibu between January 2 and February 21, 2025. Use the slider below to explore satellite images captured on these key dates. Although our technical analysis employs DNBR (Delta Normalized Burn Ratio) values, here they serve as textual context to help illustrate the visual transformation—from a lush, vibrant landscape to one scarred by fire and finally showing early signs of recovery.
@@ -174,12 +197,10 @@
           The imagery captured on January 30 starkly revealed the devastation—the once-thriving ecosystem had largely been supplanted by charred remnants, and the intensity of the burns was unmistakable. Yet, amid this widespread loss, the final image from February 21 unveiled a glimmer of hope. In certain areas, early signs of regrowth emerged, suggesting nature’s resilience and the potential for recovery.
         </p>
       </div>
-      <!-- Optional: Add Illustrator-designed divider (e.g., flame SVG) here -->
     </div>
     
     <!-- Section 2: USA FIRMS Map for Active Wildfires -->
     <div class="section" id="firms-section">
-      <!-- Replace with Illustrator-designed SVG/PNG header if desired -->
       <h2>Wildfires Across the USA</h2>
       <p>
         Wildfires continue to threaten communities across the United States. The interactive map below, based on a locally clipped FIRMS dataset joined with county names, displays active wildfire events. Each marker indicates the county where the fire was detected, offering valuable insight into the local impacts within the broader national crisis.
@@ -231,27 +252,20 @@
       .then(data => {
         L.geoJSON(data, {
           pointToLayer: (feature, latlng) => {
-            return L.marker(latlng, {
-              icon: L.icon({
-                iconUrl: 'flame-icon.svg', /* Custom flame icon from Illustrator */
-                iconSize: [20, 30],
-                iconAnchor: [10, 30]
-              })
+            return L.circleMarker(latlng, {
+              radius: 5,
+              fillColor: '#FF5722', /* Fire-orange markers */
+              color: '#FF5722',
+              weight: 1,
+              opacity: 1,
+              fillOpacity: 0.8
             });
           },
           onEachFeature: (feature, layer) => {
             const county = feature.properties.county_name || feature.properties.name || 'Unknown County';
             layer.bindPopup(`<b>County:</b> ${county}`);
-            layer.on('mouseover', () => layer.setIcon(L.icon({
-              iconUrl: 'flame-icon.svg',
-              iconSize: [25, 35], /* Scale up on hover */
-              iconAnchor: [12.5, 35]
-            })));
-            layer.on('mouseout', () => layer.setIcon(L.icon({
-              iconUrl: 'flame-icon.svg',
-              iconSize: [20, 30],
-              iconAnchor: [10, 30]
-            })));
+            layer.on('mouseover', () => layer.setStyle({ radius: 7, fillOpacity: 1 }));
+            layer.on('mouseout', () => layer.setStyle({ radius: 5, fillOpacity: 0.8 }));
           }
         }).addTo(firmsMap);
       })
