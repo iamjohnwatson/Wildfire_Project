@@ -19,8 +19,8 @@
       font-family: 'Merriweather', serif;
       margin: 0;
       padding: 0;
-      background: #FFFFFF; /* White background */
-      color: #000000; /* Black text */
+      background: #FFFFFF;
+      color: #000000;
       line-height: 1.6;
       overflow-x: hidden;
     }
@@ -33,7 +33,7 @@
       letter-spacing: 1px;
       margin: 20px 0 8px;
       padding: 0;
-      color: #000000; /* Black headers */
+      color: #000000;
     }
     .byline {
       font-size: 0.9em;
@@ -54,9 +54,9 @@
       margin: 40px 0;
       padding: 20px;
       border-radius: 8px;
-      background: rgba(240, 240, 240, 0.5); /* Very light gray for subtle depth */
-      border: 1px solid #E0E0E0; /* Light gray border */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+      background: rgba(240, 240, 240, 0.5);
+      border: 1px solid #E0E0E0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
       opacity: 0;
       animation: fadeIn 1s ease forwards;
     }
@@ -75,36 +75,36 @@
       max-width: 500px;
       -webkit-appearance: none;
       appearance: none;
-      height: 6px;
-      background: #E0E0E0; /* Light gray track */
-      border-radius: 3px;
+      height: 8px;
+      background: #E0E0E0;
+      border-radius: 4px;
       outline: none;
       margin: 20px auto;
     }
     .slider-container input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 16px;
-      height: 16px;
-      background: #000000; /* Black thumb */
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-      animation: bounce 2s infinite ease-in-out; /* Bouncing effect */
-    }
-    .slider-container input[type=range]::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       background: #000000;
       border-radius: 50%;
       cursor: pointer;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-      animation: bounce 2s infinite ease-in-out;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+      animation: pulse 2s infinite ease-in-out;
     }
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-6px); }
-      60% { transform: translateY(-3px); }
+    .slider-container input[type=range]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #000000;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+      animation: pulse 2s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
     }
     
     /* Image Display */
@@ -120,6 +120,20 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
     
+    /* DNBR Box */
+    #analysisText {
+      text-align: center;
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(240, 240, 240, 0.8); /* Slightly darker gray for contrast */
+      border: 1px solid #E0E0E0;
+      border-radius: 4px;
+      font-size: 1em;
+      font-family: 'Merriweather', serif;
+      color: #000000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
     /* Narrative */
     .narrative {
       font-size: 1.1em;
@@ -128,7 +142,7 @@
     .narrative blockquote {
       color: #000000;
       font-style: italic;
-      border-left: 4px solid #B0BEC5; /* Neutral gray */
+      border-left: 4px solid #B0BEC5;
       padding-left: 20px;
       margin: 20px 0;
     }
@@ -177,13 +191,13 @@
         These maps chronicle the evolution of a catastrophic wildfire that devastated Pacific Palisades and Malibu between January 2 and February 21, 2025. Use the slider below to explore satellite images captured on these key dates. Although our technical analysis employs DNBR (Delta Normalized Burn Ratio) values, here they serve as textual context to help illustrate the visual transformation—from a lush, vibrant landscape to one scarred by fire and finally showing early signs of recovery.
       </p>
       <div class="slider-container">
-        <input type="range" id="imageSlider" min="0" max="1" step="0.01" value="0">
+        <input type="range" id="imageSlider" min="0" max="3" step="1" value="0">
         <p id="sliderLabel">Date: January 2, 2025</p>
       </div>
       <div class="image-display">
         <img id="satelliteImage" src="SWIR_02012025.jpg" alt="Satellite Image - January 2, 2025">
       </div>
-      <div class="narrative" id="analysisText">
+      <div id="analysisText">
         <p>DNBR: Minimal damage.</p>
       </div>
       <div class="narrative">
@@ -222,7 +236,7 @@
   
   <script>
     // -------------------------------
-    // Section 1: Satellite Image Slider (Progressive)
+    // Section 1: Satellite Image Slider (Stepped)
     // -------------------------------
     const images = [
       { date: 'January 2, 2025', src: 'SWIR_02012025.jpg', dnbr: 'DNBR: Minimal damage.' },
@@ -236,37 +250,18 @@
     const sliderLabel = document.getElementById('sliderLabel');
     const analysisText = document.getElementById('analysisText');
     
-    const startDate = new Date('2025-01-02');
-    const endDate = new Date('2025-02-21');
-    const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
-
     slider.addEventListener('input', function() {
-      const value = parseFloat(this.value);
-      const numImages = images.length - 1;
-      const scaledValue = value * numImages;
-      const index = Math.floor(scaledValue);
-      const nextIndex = Math.min(index + 1, numImages);
-      const fraction = scaledValue - index;
-
-      const currentDays = totalDays * value;
-      const interpolatedDate = new Date(startDate.getTime() + currentDays * 24 * 60 * 60 * 1000);
-      const dateString = interpolatedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-      if (fraction < 0.5) {
-        satelliteImage.src = images[index].src;
-        analysisText.innerHTML = `<p>${images[index].dnbr}</p>`;
-      } else {
-        satelliteImage.src = images[nextIndex].src;
-        analysisText.innerHTML = `<p>${images[nextIndex].dnbr}</p>`;
-      }
-      sliderLabel.textContent = `Date: ${dateString}`;
+      const index = parseInt(this.value);
+      satelliteImage.src = images[index].src;
+      sliderLabel.textContent = `Date: ${images[index].date}`;
+      analysisText.innerHTML = `<p>${images[index].dnbr}</p>`;
     });
     
     // -------------------------------
     // Section 2: USA FIRMS Map
     // -------------------------------
     const firmsMap = L.map('firms-map').setView([37.5, -95], 4);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { /* Light basemap for minimal look */
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '© CartoDB'
     }).addTo(firmsMap);
     
@@ -278,8 +273,8 @@
           pointToLayer: (feature, latlng) => {
             return L.circleMarker(latlng, {
               radius: 6,
-              fillColor: '#000000', /* Black markers */
-              color: '#000000',
+              fillColor: '#F4511E',
+              color: '#F4511E',
               weight: 1,
               opacity: 0.9,
               fillOpacity: 0.7
