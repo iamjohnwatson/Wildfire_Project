@@ -19,39 +19,10 @@
       font-family: 'Merriweather', serif;
       margin: 0;
       padding: 0;
-      background: #F4511E; /* Dark orange base */
-      color: #333;
+      background: #FFFFFF; /* White background */
+      color: #000000; /* Black text */
       line-height: 1.6;
       overflow-x: hidden;
-      perspective: 1000px; /* 3D effect */
-      position: relative;
-    }
-    body::before { /* Gradient overlay */
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(244, 81, 30, 0.8), rgba(255, 204, 188, 0.2));
-      z-index: -2;
-    }
-    body::after { /* Floating particles */
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-      background-size: 20px 20px;
-      animation: floatParticles 20s linear infinite;
-      z-index: -1;
-      opacity: 0.3;
-    }
-    @keyframes floatParticles {
-      0% { transform: translateY(0) translateZ(-100px); }
-      100% { transform: translateY(-100vh) translateZ(50px); }
     }
     p {
       margin: 16px 0;
@@ -59,27 +30,16 @@
     h1, h2 {
       font-family: 'Oswald', sans-serif;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      margin: 20px 0 16px;
+      letter-spacing: 1px;
+      margin: 20px 0 8px;
       padding: 0;
-      color: #D84315;
-      position: relative;
-      text-shadow: 0 0 10px rgba(244, 81, 30, 0.5); /* Glowing effect */
+      color: #000000; /* Black headers */
     }
-    h1::after, h2::after { /* Smoke trail */
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: 0;
-      width: 100%;
-      height: 20px;
-      background: rgba(244, 81, 30, 0.2);
-      filter: blur(10px);
-      animation: smokeTrail 3s infinite;
-    }
-    @keyframes smokeTrail {
-      0% { transform: translateX(-20px); opacity: 0.5; }
-      100% { transform: translateX(20px); opacity: 0; }
+    .byline {
+      font-size: 0.9em;
+      color: #000000;
+      margin: 0 0 16px;
+      font-style: italic;
     }
     
     /* Container */
@@ -87,31 +47,21 @@
       max-width: 1000px;
       margin: 0 auto;
       padding: 20px;
-      position: relative;
-      transform-style: preserve-3d;
     }
     
-    /* Section Styles (Glassmorphic with 3D, no tilt) */
+    /* Section Styles (Minimal) */
     .section {
       margin: 40px 0;
-      padding: 30px;
-      border-radius: 15px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 204, 188, 0.4);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-      transform: translateZ(20px);
-      transition: transform 0.5s ease, opacity 0.5s ease;
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-      animation: burnReveal 1.5s ease forwards;
+      padding: 20px;
+      border-radius: 8px;
+      background: rgba(240, 240, 240, 0.5); /* Very light gray for subtle depth */
+      border: 1px solid #E0E0E0; /* Light gray border */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
     }
-    .section:hover {
-      transform: translateZ(30px); /* Depth only, no tilt */
-    }
-    @keyframes burnReveal {
-      0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); opacity: 0; }
-      100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
     
     /* Slider Styles */
@@ -125,42 +75,36 @@
       max-width: 500px;
       -webkit-appearance: none;
       appearance: none;
-      height: 8px;
-      background: linear-gradient(to right, #FFCCBC, #F4511E);
-      border-radius: 4px;
+      height: 6px;
+      background: #E0E0E0; /* Light gray track */
+      border-radius: 3px;
       outline: none;
       margin: 20px auto;
-      position: relative;
-    }
-    .slider-container input[type=range]::before { /* Timeline markers */
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: 0;
-      width: 100%;
-      height: 20px;
-      background: linear-gradient(to right, transparent 0%, #F4511E 2%, transparent 4%, transparent 24%, #F4511E 26%, transparent 28%, transparent 48%, #F4511E 50%, transparent 52%, transparent 72%, #F4511E 74%, transparent 76%);
-      pointer-events: none;
     }
     .slider-container input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 24px;
-      height: 36px;
-      background: #F4511E;
-      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      width: 16px;
+      height: 16px;
+      background: #000000; /* Black thumb */
+      border-radius: 50%;
       cursor: pointer;
-      box-shadow: 0 0 15px rgba(244, 81, 30, 0.8);
-      transition: transform 0.3s ease;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      animation: bounce 2s infinite ease-in-out; /* Bouncing effect */
     }
     .slider-container input[type=range]::-moz-range-thumb {
-      width: 24px;
-      height: 36px;
-      background: #F4511E;
-      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      width: 16px;
+      height: 16px;
+      background: #000000;
+      border-radius: 50%;
       cursor: pointer;
-      box-shadow: 0 0 15px rgba(244, 81, 30, 0.8);
-      transition: transform 0.3s ease;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      animation: bounce 2s infinite ease-in-out;
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-6px); }
+      60% { transform: translateY(-3px); }
     }
     
     /* Image Display */
@@ -171,69 +115,48 @@
     .image-display img {
       width: 100%;
       max-height: 500px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(244, 81, 30, 0.5);
-      border: 2px solid rgba(244, 81, 30, 0.7);
-      transition: filter 0.5s ease;
-    }
-    .image-display img.active {
-      filter: brightness(1.2) contrast(1.1); /* Burn transition */
+      border-radius: 8px;
+      border: 1px solid #E0E0E0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
     
     /* Narrative */
     .narrative {
       font-size: 1.1em;
       margin-top: 20px;
-      opacity: 0;
-      animation: fadeText 2s ease forwards 0.5s;
-    }
-    @keyframes fadeText {
-      to { opacity: 1; }
     }
     .narrative blockquote {
-      color: #FF8A65;
+      color: #000000;
       font-style: italic;
-      border-left: 4px solid #F4511E;
+      border-left: 4px solid #B0BEC5; /* Neutral gray */
       padding-left: 20px;
       margin: 20px 0;
-      position: relative;
-    }
-    .narrative blockquote::before {
-      content: '';
-      position: absolute;
-      left: -10px;
-      top: 0;
-      width: 5px;
-      height: 100%;
-      background: linear-gradient(to bottom, #F4511E, transparent);
-      animation: glowLine 2s infinite;
-    }
-    @keyframes glowLine {
-      0% { opacity: 0.5; }
-      50% { opacity: 1; }
-      100% { opacity: 0.5; }
     }
     
     /* Map */
     #firms-map {
       width: 100%;
       height: 500px;
-      border-radius: 10px;
+      border-radius: 8px;
       margin-top: 30px;
-      border: 2px solid rgba(244, 81, 30, 0.7);
-      position: relative;
-      overflow: hidden;
+      border: 1px solid #E0E0E0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
-    #firms-map::before { /* Heat-map overlay */
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, rgba(244, 81, 30, 0.3), transparent);
-      pointer-events: none;
-      z-index: 1;
+    
+    /* Tools and Source Sections */
+    .tools-source {
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #E0E0E0;
+      margin-top: 40px;
+    }
+    .tools-source p {
+      margin: 8px 0;
+      font-size: 0.9em;
+      color: #000000;
+    }
+    .tools-source .tools {
+      font-weight: bold;
     }
     
     /* Responsive adjustments */
@@ -249,11 +172,12 @@
     <!-- Section 1: Satellite Image Slider for Pacific Palisades & Malibu -->
     <div class="section" id="satellite-section">
       <h1>Wildfire Impact in Pacific Palisades & Malibu</h1>
+      <p class="byline">Akash Sriram</p>
       <p>
         These maps chronicle the evolution of a catastrophic wildfire that devastated Pacific Palisades and Malibu between January 2 and February 21, 2025. Use the slider below to explore satellite images captured on these key dates. Although our technical analysis employs DNBR (Delta Normalized Burn Ratio) values, here they serve as textual context to help illustrate the visual transformation—from a lush, vibrant landscape to one scarred by fire and finally showing early signs of recovery.
       </p>
       <div class="slider-container">
-        <input type="range" id="imageSlider" min="0" max="3" step="1" value="0">
+        <input type="range" id="imageSlider" min="0" max="1" step="0.01" value="0">
         <p id="sliderLabel">Date: January 2, 2025</p>
       </div>
       <div class="image-display">
@@ -288,11 +212,17 @@
         </p>
       </div>
     </div>
+
+    <!-- Tools and Source Section -->
+    <div class="tools-source">
+      <p class="tools">Tools Used: QGIS, CSS, HTML, JS</p>
+      <p>Source: USGS</p>
+    </div>
   </div>
   
   <script>
     // -------------------------------
-    // Section 1: Satellite Image Slider
+    // Section 1: Satellite Image Slider (Progressive)
     // -------------------------------
     const images = [
       { date: 'January 2, 2025', src: 'SWIR_02012025.jpg', dnbr: 'DNBR: Minimal damage.' },
@@ -306,22 +236,37 @@
     const sliderLabel = document.getElementById('sliderLabel');
     const analysisText = document.getElementById('analysisText');
     
+    const startDate = new Date('2025-01-02');
+    const endDate = new Date('2025-02-21');
+    const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
+
     slider.addEventListener('input', function() {
-      const index = parseInt(this.value);
-      satelliteImage.classList.remove('active');
-      setTimeout(() => {
+      const value = parseFloat(this.value);
+      const numImages = images.length - 1;
+      const scaledValue = value * numImages;
+      const index = Math.floor(scaledValue);
+      const nextIndex = Math.min(index + 1, numImages);
+      const fraction = scaledValue - index;
+
+      const currentDays = totalDays * value;
+      const interpolatedDate = new Date(startDate.getTime() + currentDays * 24 * 60 * 60 * 1000);
+      const dateString = interpolatedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+      if (fraction < 0.5) {
         satelliteImage.src = images[index].src;
-        satelliteImage.classList.add('active');
-      }, 100); // Brief delay for transition
-      sliderLabel.textContent = `Date: ${images[index].date}`;
-      analysisText.innerHTML = `<p>${images[index].dnbr}</p>`;
+        analysisText.innerHTML = `<p>${images[index].dnbr}</p>`;
+      } else {
+        satelliteImage.src = images[nextIndex].src;
+        analysisText.innerHTML = `<p>${images[nextIndex].dnbr}</p>`;
+      }
+      sliderLabel.textContent = `Date: ${dateString}`;
     });
     
     // -------------------------------
     // Section 2: USA FIRMS Map
     // -------------------------------
     const firmsMap = L.map('firms-map').setView([37.5, -95], 4);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { /* Light basemap for minimal look */
       attribution: '© CartoDB'
     }).addTo(firmsMap);
     
@@ -333,12 +278,11 @@
           pointToLayer: (feature, latlng) => {
             return L.circleMarker(latlng, {
               radius: 6,
-              fillColor: '#F4511E',
-              color: '#F4511E',
+              fillColor: '#000000', /* Black markers */
+              color: '#000000',
               weight: 1,
               opacity: 0.9,
-              fillOpacity: 0.7,
-              className: 'fire-marker'
+              fillOpacity: 0.7
             });
           },
           onEachFeature: (feature, layer) => {
@@ -351,26 +295,12 @@
       })
       .catch(error => console.error('Error loading FIRMS_COUNTIES.geojson:', error));
 
-    // Add CSS for animated smoke markers
-    const style = document.createElement('style');
-    style.textContent = `
-      .fire-marker {
-        animation: smokeRise 2s infinite;
-      }
-      @keyframes smokeRise {
-        0% { transform: translateY(0); opacity: 0.7; }
-        50% { transform: translateY(-10px); opacity: 1; }
-        100% { transform: translateY(-20px); opacity: 0; }
-      }
-    `;
-    document.head.appendChild(style);
-
     // Scroll-triggered section animations
     window.addEventListener('scroll', () => {
       document.querySelectorAll('.section').forEach(section => {
         const rect = section.getBoundingClientRect();
         if (rect.top < window.innerHeight * 0.75) {
-          section.style.animation = 'burnReveal 1.5s ease forwards';
+          section.style.animation = 'fadeIn 1s ease forwards';
         }
       });
     });
